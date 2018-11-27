@@ -91,10 +91,10 @@ public final class JobManager {
                 if (instance == null) {
                     JobPreconditions.checkNotNull(context, "Context cannot be null");
 
-                    if (context.getApplicationContext() != null) {
-                        // could be null in unit tests
-                        context = context.getApplicationContext();
-                    }
+//                    if (context.getApplicationContext() != null) {
+//                        // could be null in unit tests
+//                        context = context.getApplicationContext();
+//                    }
 
                     JobApi api = JobApi.getDefault(context);
                     if (api == JobApi.V_14 && !api.isSupported(context)) {
