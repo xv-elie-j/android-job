@@ -108,18 +108,25 @@ import java.util.concurrent.TimeUnit;
             }
 
             intent.putExtra(EXTRA_WAKE_LOCK_ID, id);
-            ComponentName comp = context.startService(intent);
-            if (comp == null) {
+
+            try {
+                ComponentName comp = context.startService(intent);
+                if (comp == null) {
+                    return null;
+                }
+
+                String tag = "wake:" + comp.flattenToShortString();
+                PowerManager.WakeLock wakeLock = acquireWakeLock(context, tag, TimeUnit.MINUTES.toMillis(3));
+                if (wakeLock != null) {
+                    ACTIVE_WAKE_LOCKS.put(id, wakeLock);
+                }
+
+                return comp;
+
+            } catch (Throwable throwable) {
+                CAT.e(throwable);
                 return null;
             }
-
-            String tag = "wake:" + comp.flattenToShortString();
-            PowerManager.WakeLock wakeLock = acquireWakeLock(context, tag, TimeUnit.MINUTES.toMillis(3));
-            if (wakeLock != null) {
-                ACTIVE_WAKE_LOCKS.put(id, wakeLock);
-            }
-
-            return comp;
         }
     }
 
