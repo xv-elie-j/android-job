@@ -120,7 +120,7 @@ afterEvaluate { project ->
 }
 
 project.tasks.whenTaskAdded { task ->
-    if (task.name == 'signArchives') {
+    if (task.name == 'uploadArchives') {
         this.addSourcesAndJavadocTask task
     }
 }
